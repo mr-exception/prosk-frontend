@@ -1,13 +1,11 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import MainLayout from './Layouts/Main';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 
-import TaskCard from './TaskCard';
+import TaskCard from './TaskCard/index';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -41,7 +39,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <Grid container justify='center' style={{marginTop: 15}}>
-          <Grid item xs={8}>
+          <Grid item lg={10} md={10} sm={12} xs={12}>
             <TaskCard />
             <TaskCard />
             <TaskCard />
