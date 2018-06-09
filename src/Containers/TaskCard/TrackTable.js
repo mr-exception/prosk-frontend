@@ -150,15 +150,15 @@ class TaskCard extends React.Component {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>id</TableCell>
-            <TableCell numeric>from</TableCell>
-            <TableCell numeric>to</TableCell>
-            <TableCell>description</TableCell>
-            <TableCell></TableCell>
+            <TableCell key="id" >id</TableCell>
+            <TableCell key="from"  numeric>from</TableCell>
+            <TableCell key="tp"  numeric>to</TableCell>
+            <TableCell key="description" >description</TableCell>
+            <TableCell key="operations" ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item, index) => <TrackRow item={item} index={index} />)}
+          {data.map((item, index) => <TrackRow item={item} key={index} />)}
         </TableBody>
         <TableFooter>
           <TableRow>

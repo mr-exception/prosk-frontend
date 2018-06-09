@@ -40,12 +40,12 @@ class Dashboard extends React.Component {
       <div>
         <Grid container justify='center' style={{marginTop: 15}}>
           <Grid item lg={10} md={10} sm={12} xs={12}>
-            <TaskCard />
-            <TaskCard />
-            <TaskCard />
-            <TaskCard />
-            <TaskCard />
-            <TaskCard />
+            <TaskCard key='l0' />
+            <TaskCard key='l1' />
+            <TaskCard key='l2' />
+            <TaskCard key='l3' />
+            <TaskCard key='l4' />
+            <TaskCard key='l5' />
           </Grid>
         </Grid>
         <Button variant="fab" className={classes.floatingButton} color='primary'>

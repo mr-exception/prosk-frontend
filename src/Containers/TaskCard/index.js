@@ -45,13 +45,50 @@ const styles = theme => ({
     width: '50%',
     maxWidth: 600
   },
+  timer: {
+    margin: 'auto'
+  }
 });
 class index extends React.Component {
-  state = { expanded: false };
+  state = { 
+    timer: {
+      active: false,
+      value: 0,
+    },
+    expanded: false 
+  };
+  componentDidMount(){
+    setInterval(() => {
+      if(!this.state.timer.active)
+        return;
+      const currentState = this.state;
+      currentState.timer.value++;
+      this.setState(currentState);
+      console.log(currentState.timer);
+    }, 1000);
+  }
+
+  handleTimer = () => {
+    if(this.state.timer.active){
+      const seconds = this.state.timer.value % 60;
+      const minutes = Math.floor(this.state.timer.value/60);
+      const hours = Math.floor(this.state.timer.value/3600);
+      return `${hours}:${minutes}:${seconds}`;
+    }else
+      return '';
+  }
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
   };
+
+  startTracking = () => {
+    this.setState({timer: {active: true, value: 0}});
+  }
+
+  stopTracking = () => {
+    this.setState({timer: {active: false, value: 0}});
+  }
 
   render() {
     const { classes } = this.props;
@@ -60,17 +97,17 @@ class index extends React.Component {
         <Card className={classes.card}>
           <CardHeader
             action={[
-              <Tooltip id="tooltip-icon" title="mark as done">
+              <Tooltip key="done" id="tooltip-icon" title="mark as done">
                 <IconButton className={classes.button} style={{color: green[600]}} aria-label="Done">
                   <i className="material-icons">check_circle</i>
                 </IconButton>
               </Tooltip>,
-              <Tooltip id="tooltip-icon" title="add custom track">
+              <Tooltip key="timer" id="tooltip-icon" title="add custom track">
                 <IconButton className={classes.button} style={{color: blue[600]}} aria-label="Delete">
                   <i className="material-icons">av_timer</i>
                 </IconButton>
               </Tooltip>,
-              <Tooltip id="tooltip-icon" title="remove task">
+              <Tooltip key="delete" id="tooltip-icon" title="remove task">
                 <IconButton className={classes.button} style={{color: red[800]}} aria-label="Delete">
                   <i className="material-icons">delete</i>
                 </IconButton>
@@ -88,12 +125,12 @@ class index extends React.Component {
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
             <Tooltip id="tooltip-icon" title="stop and save tracking">
-              <IconButton aria-label="Stop" style={{color: red[600]}}>
+              <IconButton aria-label="Stop" style={{color: red[600]}} onClick={this.stopTracking}>
                 <i className="material-icons">stop</i>
               </IconButton>
             </Tooltip>
             <Tooltip id="tooltip-icon" title="start tracking">
-              <IconButton aria-label="Start" style={{color: blue[600]}}>
+              <IconButton aria-label="Start" style={{color: blue[600]}} onClick={this.startTracking}>
                 <i className="material-icons">play_arrow</i>
               </IconButton>
             </Tooltip>
@@ -104,6 +141,9 @@ class index extends React.Component {
                 'aria-label': 'track-description',
               }}
             />
+            <Typography variant="subheading" className={classes.timer} gutterBottom>
+              {this.handleTimer()}
+            </Typography>
             <Tooltip id="tooltip-icon" title={this.state.expanded? "hide": "show more"}>
               <IconButton
                 className={classnames(classes.expand, {
