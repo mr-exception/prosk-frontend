@@ -154,6 +154,7 @@ class TaskCard extends React.Component {
             <TableCell numeric>from</TableCell>
             <TableCell numeric>to</TableCell>
             <TableCell>description</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -162,7 +163,7 @@ class TaskCard extends React.Component {
         <TableFooter>
           <TableRow>
             <TablePagination
-              colSpan={4}
+              colSpan={5}
               count={25}
               rowsPerPage={10}
               page={0}

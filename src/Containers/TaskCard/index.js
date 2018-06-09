@@ -12,6 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Input from '@material-ui/core/Input';
 
+import green from '@material-ui/core/colors/green';
+import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
+
 import TrackTable from './TrackTable';
 
 const styles = theme => ({
@@ -57,17 +61,17 @@ class index extends React.Component {
           <CardHeader
             action={[
               <Tooltip id="tooltip-icon" title="mark as done">
-                <IconButton className={classes.button} aria-label="Done">
+                <IconButton className={classes.button} style={{color: green[600]}} aria-label="Done">
                   <i className="material-icons">check_circle</i>
                 </IconButton>
               </Tooltip>,
               <Tooltip id="tooltip-icon" title="add custom track">
-                <IconButton className={classes.button} aria-label="Delete">
+                <IconButton className={classes.button} style={{color: blue[600]}} aria-label="Delete">
                   <i className="material-icons">av_timer</i>
                 </IconButton>
               </Tooltip>,
               <Tooltip id="tooltip-icon" title="remove task">
-                <IconButton className={classes.button} aria-label="Delete">
+                <IconButton className={classes.button} style={{color: red[800]}} aria-label="Delete">
                   <i className="material-icons">delete</i>
                 </IconButton>
               </Tooltip>
@@ -84,12 +88,12 @@ class index extends React.Component {
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
             <Tooltip id="tooltip-icon" title="stop and save tracking">
-              <IconButton aria-label="Stop">
+              <IconButton aria-label="Stop" style={{color: red[600]}}>
                 <i className="material-icons">stop</i>
               </IconButton>
             </Tooltip>
             <Tooltip id="tooltip-icon" title="start tracking">
-              <IconButton aria-label="Start">
+              <IconButton aria-label="Start" style={{color: blue[600]}}>
                 <i className="material-icons">play_arrow</i>
               </IconButton>
             </Tooltip>
