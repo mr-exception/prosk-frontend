@@ -131,11 +131,11 @@ const styles = theme => ({
   },
 });
 const data = [
-  {started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Do fugiat sit aute est sit id velit excepteur sint fugiat commodo occaecat.'},
-  {started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Officia esse aute aliquip irure veniam eu ipsum culpa et est est ullamco veniam.'},
-  {started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Aliquip consequat exercitation commodo nostrud.'},
-  {started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Cupidatat sint qui voluptate irure.'},
-  {started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Ex labore elit velit exercitation deserunt amet cillum.'},
+  {id: 1,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Do fugiat sit aute est sit id velit excepteur sint fugiat commodo occaecat.'},
+  {id: 2,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Officia esse aute aliquip irure veniam eu ipsum culpa et est est ullamco veniam.'},
+  {id: 3,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Aliquip consequat exercitation commodo nostrud.'},
+  {id: 4,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Cupidatat sint qui voluptate irure.'},
+  {id: 5,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Ex labore elit velit exercitation deserunt amet cillum.'},
 ];
 class TaskCard extends React.Component {
   state = { expanded: false };
@@ -158,7 +158,7 @@ class TaskCard extends React.Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item, index) => <TrackRow item={item} key={index} />)}
+          {data.map((item, index) => <TrackRow item={item} index={index} key={index} />)}
         </TableBody>
         <TableFooter>
           <TableRow>

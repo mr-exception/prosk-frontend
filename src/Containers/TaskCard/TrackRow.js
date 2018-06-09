@@ -14,10 +14,10 @@ const styles = theme => ({
 
 class TrackRow extends React.Component {
   render() {
-    const { item, key, classes } = this.props;
+    const { item, index, classes } = this.props;
     return (
-      <TableRow key={key}>
-        <TableCell>{key+1}</TableCell>
+      <TableRow>
+        <TableCell>{index+1}</TableCell>
         <TableCell>{item.started_at}</TableCell>
         <TableCell>{item.finished_at}</TableCell>
         <TableCell>{item.description}</TableCell>

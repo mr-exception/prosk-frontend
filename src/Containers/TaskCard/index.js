@@ -15,8 +15,10 @@ import Input from '@material-ui/core/Input';
 import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
+import orange from '@material-ui/core/colors/orange';
 
 import TrackTable from './TrackTable';
+
 
 const styles = theme => ({
   root: {
@@ -91,17 +93,27 @@ class index extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, status } = this.props;
+    console.log(status)
     return (
       <div className={classes.root}>
-        <Card className={classes.card}>
+        <Card className={classes.card} style={status===3? {background: '#EEE'}: {}}>
           <CardHeader
             action={[
-              <Tooltip key="done" id="tooltip-icon" title="mark as done">
-                <IconButton className={classes.button} style={{color: green[600]}} aria-label="Done">
-                  <i className="material-icons">check_circle</i>
-                </IconButton>
-              </Tooltip>,
+              status === 3?(
+                <Tooltip key="done" id="tooltip-icon" title="mark as doing">
+                  <IconButton className={classes.button} style={{color: orange[500]}} aria-label="Done">
+                    <i className="material-icons">error</i>
+                  </IconButton>
+                </Tooltip>
+              ):(
+                <Tooltip key="done" id="tooltip-icon" title="mark as done">
+                  <IconButton className={classes.button} style={{color: green[600]}} aria-label="Done">
+                    <i className="material-icons">check_circle</i>
+                  </IconButton>
+                </Tooltip>
+              )
+              ,
               <Tooltip key="timer" id="tooltip-icon" title="add custom track">
                 <IconButton className={classes.button} style={{color: blue[600]}} aria-label="Delete">
                   <i className="material-icons">av_timer</i>
@@ -113,7 +125,7 @@ class index extends React.Component {
                 </IconButton>
               </Tooltip>
             ]}
-            title="Task Title"
+            title={`Task Title`}
             subheader="you worked on this task for 02:05:43"
           />
           <CardContent>
@@ -124,26 +136,28 @@ class index extends React.Component {
             </Typography>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
-            <Tooltip id="tooltip-icon" title="stop and save tracking">
-              <IconButton aria-label="Stop" style={{color: red[600]}} onClick={this.stopTracking}>
-                <i className="material-icons">stop</i>
-              </IconButton>
-            </Tooltip>
-            <Tooltip id="tooltip-icon" title="start tracking">
-              <IconButton aria-label="Start" style={{color: blue[600]}} onClick={this.startTracking}>
-                <i className="material-icons">play_arrow</i>
-              </IconButton>
-            </Tooltip>
-            <Input
-              placeholder="enter something about you works today"
-              className={classes.input}
-              inputProps={{
-                'aria-label': 'track-description',
-              }}
-            />
-            <Typography variant="subheading" className={classes.timer} gutterBottom>
-              {this.handleTimer()}
-            </Typography>
+            {status !== 3?(
+              [<Tooltip id="tooltip-icon" title="stop and save tracking">
+                <IconButton aria-label="Stop" style={{color: red[600]}} onClick={this.stopTracking}>
+                  <i className="material-icons">stop</i>
+                </IconButton>
+              </Tooltip>,
+              <Tooltip id="tooltip-icon" title="start tracking">
+                <IconButton aria-label="Start" style={{color: blue[600]}} onClick={this.startTracking}>
+                  <i className="material-icons">play_arrow</i>
+                </IconButton>
+              </Tooltip>,
+              <Input
+                placeholder="enter something about you works today"
+                className={classes.input}
+                inputProps={{
+                  'aria-label': 'track-description',
+                }}
+              />,
+              <Typography variant="subheading" className={classes.timer} gutterBottom>
+                {this.handleTimer()}
+              </Typography>]
+            ): ''}
             <Tooltip id="tooltip-icon" title={this.state.expanded? "hide": "show more"}>
               <IconButton
                 className={classnames(classes.expand, {

@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 
 import TaskCard from './TaskCard/index';
+import NewTask from './NewTask';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -32,8 +33,19 @@ class Dashboard extends React.Component {
    * content is the main render function for the content yield in layout
    */
   state = {
+    newTaskDialogOpen: true
   };
 
+  openNewTaskDialog = () => {
+    this.setState({
+      newTaskDialogOpen: true
+    })
+  }
+  closeNewTaskDialog = () => {
+    this.setState({
+      newTaskDialogOpen: false
+    })
+  }
   content = () => {
     const { classes } = this.props;
     return (
@@ -45,12 +57,13 @@ class Dashboard extends React.Component {
             <TaskCard key='l2' />
             <TaskCard key='l3' />
             <TaskCard key='l4' />
-            <TaskCard key='l5' />
+            <TaskCard key='l5' status={3}/>
           </Grid>
         </Grid>
-        <Button variant="fab" className={classes.floatingButton} color='primary'>
+        <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingButton} color='primary'>
           <AddIcon />
         </Button>
+        <NewTask open={this.state.newTaskDialogOpen} close={this.closeNewTaskDialog}/>
       </div>
     )
   }
