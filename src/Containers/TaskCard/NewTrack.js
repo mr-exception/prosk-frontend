@@ -35,8 +35,6 @@ class NewTrack extends React.Component {
             start: DateFromat(start_date, 'yyyy-mm-dd') + 'T' + DateFromat(start_date, 'hh:MM'),
             finish: DateFromat(finish_date, 'yyyy-mm-dd') + 'T' + DateFromat(finish_date, 'hh:MM')
         }     
-    }, () => {
-        console.log(this.state.default_dates)
     })
   }
   render() {

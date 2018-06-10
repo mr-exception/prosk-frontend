@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import TaskCard from './TaskCard/index';
 import NewTask from './NewTask';
 
+import TokenDriver from '../Drivers/Token';
+
 const styles = theme => ({
   root: theme.mixins.gutters({
     paddingTop: 16,
@@ -35,6 +37,14 @@ class Dashboard extends React.Component {
   state = {
     newTaskDialogOpen: false
   };
+
+  componentDidMount(){
+    TokenDriver.getToken((token) => {
+      console.log(`token: ${token}`)
+    },() => {
+      console.log('failed!')
+    })
+  }
 
   openNewTaskDialog = () => {
     this.setState({

@@ -107,7 +107,6 @@ class index extends React.Component {
 
   render() {
     const { classes, status } = this.props;
-    console.log(status)
     return (
       <div className={classes.root}>
         <Card className={classes.card} style={status===3? {background: '#EEE'}: {}}>
@@ -150,24 +149,25 @@ class index extends React.Component {
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
             {status !== 3?(
-              [<Tooltip id="tooltip-icon" title="stop and save tracking">
+              [<Tooltip key="stop" id="tooltip-icon" title="stop and save tracking">
                 <IconButton aria-label="Stop" style={{color: red[600]}} onClick={this.stopTracking}>
                   <i className="material-icons">stop</i>
                 </IconButton>
               </Tooltip>,
-              <Tooltip id="tooltip-icon" title="start tracking">
+              <Tooltip key="play" id="tooltip-icon" title="start tracking">
                 <IconButton aria-label="Start" style={{color: blue[600]}} onClick={this.startTracking}>
                   <i className="material-icons">play_arrow</i>
                 </IconButton>
               </Tooltip>,
               <Input
+                key="description"
                 placeholder="enter something about you works today"
                 className={classes.input}
                 inputProps={{
                   'aria-label': 'track-description',
                 }}
               />,
-              <Typography variant="subheading" className={classes.timer} gutterBottom>
+              <Typography key="timer" variant="subheading" className={classes.timer} gutterBottom>
                 {this.handleTimer()}
               </Typography>]
             ): ''}
