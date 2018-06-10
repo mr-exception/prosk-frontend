@@ -33,7 +33,7 @@ class Dashboard extends React.Component {
    * content is the main render function for the content yield in layout
    */
   state = {
-    newTaskDialogOpen: true
+    newTaskDialogOpen: false
   };
 
   openNewTaskDialog = () => {

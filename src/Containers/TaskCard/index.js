@@ -18,6 +18,7 @@ import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 
 import TrackTable from './TrackTable';
+import NewTrack from './NewTrack';
 
 
 const styles = theme => ({
@@ -57,8 +58,20 @@ class index extends React.Component {
       active: false,
       value: 0,
     },
-    expanded: false 
+    expanded: false,
+    newTrackDialogOpen: false,
   };
+
+  openNewTrackDialog = () => {
+    this.setState({
+      newTrackDialogOpen: true
+    })
+  }
+  closeNewTrackDialog = () => {
+    this.setState({
+      newTrackDialogOpen: false
+    })
+  }
   componentDidMount(){
     setInterval(() => {
       if(!this.state.timer.active)
@@ -115,7 +128,7 @@ class index extends React.Component {
               )
               ,
               <Tooltip key="timer" id="tooltip-icon" title="add custom track">
-                <IconButton className={classes.button} style={{color: blue[600]}} aria-label="Delete">
+                <IconButton className={classes.button} style={{color: blue[600]}} onClick={this.openNewTrackDialog} aria-label="Delete">
                   <i className="material-icons">av_timer</i>
                 </IconButton>
               </Tooltip>,
@@ -177,6 +190,7 @@ class index extends React.Component {
             </CardContent>
           </Collapse>
         </Card>
+        <NewTrack open={this.state.newTrackDialogOpen} close={this.closeNewTrackDialog}/>
       </div>
     );
   }
