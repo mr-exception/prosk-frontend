@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 
+import {newTask} from '../Drivers/Tasks';
 
 const styles = theme => ({
     textField: {
@@ -27,6 +28,19 @@ class NewTask extends React.Component {
     }
   };
 
+    onSave = () => {
+        // newTask(this.title.value, this.description.value, this.start_time.value, this.finish_time.value, 5, (task) => {
+        const title = document.getElementById('title').value
+        const description = document.getElementById('description').value
+        const start_time = document.getElementById('start_time').value
+        const finish_time = document.getElementById('finish_time').value
+
+        newTask(title, description, start_time, finish_time, 5, (task) => {
+            this.props.close()
+        }, (errors) => {
+
+        })
+    }
   componentDidMount(){
     const start_date = new Date();
     const finish_date = new Date(Date.now() + 48*60*60*1000);
@@ -53,6 +67,7 @@ class NewTask extends React.Component {
                 you can have new task here
             </DialogContentText>
             <TextField
+                ref={(ref) => this.title = ref}
                 autoFocus
                 margin="dense"
                 id="title"
@@ -62,6 +77,7 @@ class NewTask extends React.Component {
                 className={classes.textField}
             />
             <TextField
+                ref={(ref) => this.description = ref}
                 id="description"
                 label="Multiline"
                 multiline
@@ -71,6 +87,7 @@ class NewTask extends React.Component {
                 fullWidth
             />
             <TextField
+                ref={(ref) => this.start_time = ref}
                 id="start_time"
                 label="have to be started at"
                 type="datetime-local"
@@ -81,6 +98,7 @@ class NewTask extends React.Component {
                 }}
             />
             <TextField
+                ref={(ref) => this.finish_time = ref}
                 id="finish_time"
                 label="have to be finished at"
                 type="datetime-local"
@@ -95,7 +113,7 @@ class NewTask extends React.Component {
             <Button onClick={this.props.close} color="secondary">
               Cancel
             </Button>
-            <Button onClick={this.props.close} color="primary">
+            <Button onClick={this.onSave} color="primary">
               Save
             </Button>
           </DialogActions>

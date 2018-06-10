@@ -137,15 +137,11 @@ class index extends React.Component {
                 </IconButton>
               </Tooltip>
             ]}
-            title={`Task Title`}
+            title={this.props.title}
             subheader="you worked on this task for 02:05:43"
           />
           <CardContent>
-            <Typography component="p">
-                Culpa id dolore ullamco minim ea sit aliqua laboris cillum mollit excepteur id. Pariatur voluptate commodo tempor aliquip cupidatat duis ipsum laboris dolor consectetur magna id eu. Cupidatat labore labore do adipisicing anim est dolore sit consequat labore velit aliqua amet in. Magna laboris anim irure quis id et nisi duis elit dolore deserunt ipsum.
-                Esse est qui occaecat eu aliquip adipisicing eiusmod mollit duis. Eu fugiat fugiat esse dolore irure reprehenderit proident consequat amet qui aliqua officia incididunt cupidatat. Culpa qui do anim officia labore. Nisi amet nostrud aute pariatur. Esse qui nisi ullamco excepteur qui dolore labore voluptate nostrud ullamco laboris amet Lorem. Reprehenderit voluptate eu ut consectetur deserunt incididunt dolore enim eu.
-                Irure in duis exercitation mollit adipisicing cillum nisi ipsum. Veniam laboris adipisicing ex id qui aliquip tempor qui in proident cupidatat. Et nisi sint esse Lorem.
-            </Typography>
+            <Typography component="p">{this.props.description}</Typography>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
             {status !== 3?(

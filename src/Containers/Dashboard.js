@@ -9,6 +9,10 @@ import TaskCard from './TaskCard/index';
 import NewTask from './NewTask';
 
 import TokenDriver from '../Drivers/Token';
+import TaskDriver from '../Drivers/Tasks';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -24,6 +28,16 @@ const styles = theme => ({
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
   },
+  paper: {
+    textAlign: 'center',
+    padding: 25,
+    marginTop: 40,
+    width: '50%',
+    marginLeft: '23%',
+  },
+  typography: {
+    margin: 25
+  }
 });
 
 class Dashboard extends React.Component {
@@ -35,14 +49,24 @@ class Dashboard extends React.Component {
    * content is the main render function for the content yield in layout
    */
   state = {
-    newTaskDialogOpen: false
+    newTaskDialogOpen: false,
+    tasks: [],
+    loading: false,
   };
 
   componentDidMount(){
-    TokenDriver.getToken((token) => {
-      console.log(`token: ${token}`)
-    },() => {
-      console.log('failed!')
+    this.setState({
+      loading: true
+    }, () => {
+      TaskDriver.getTasks((tasks) => {
+        this.setState({
+          tasks, loading: false
+        }, () => {
+          console.log(this.state)
+        })
+      }, (errors) => {
+        console.log(errors);
+      });
     })
   }
 
@@ -52,6 +76,7 @@ class Dashboard extends React.Component {
     })
   }
   closeNewTaskDialog = () => {
+    console.log('test')
     this.setState({
       newTaskDialogOpen: false
     })
@@ -62,12 +87,28 @@ class Dashboard extends React.Component {
       <div>
         <Grid container justify='center' style={{marginTop: 15}}>
           <Grid item lg={10} md={10} sm={12} xs={12}>
-            <TaskCard key='l0' />
-            <TaskCard key='l1' />
-            <TaskCard key='l2' />
-            <TaskCard key='l3' />
-            <TaskCard key='l4' />
-            <TaskCard key='l5' status={3}/>
+            {this.state.loading?
+                <Paper className={classes.paper} elevation={4}>
+                  <Typography className={classes.typography} variant="headline" component="title">
+                    Loading...
+                  </Typography>
+                  <Typography component="p">
+                    <CircularProgress className={classes.progress} thickness={7} />
+                  </Typography>
+                </Paper>:
+                (this.state.tasks.length > 0?
+                  this.state.tasks.map(item => <TaskCard {...item}/>):
+                  <Paper className={classes.paper} elevation={4}>
+                    <Typography className={classes.typography} variant="headline" component="title">
+                      you dont have any task.
+                    </Typography>
+                    <Typography component="p">
+                      <Button variant="contained" color="primary" onClick={this.openNewTaskDialog} className={classes.typography} className={classes.button}>
+                        add new task
+                      </Button>
+                    </Typography>
+                  </Paper>
+            )}
           </Grid>
         </Grid>
         <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingButton} color='primary'>
