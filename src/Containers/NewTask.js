@@ -1,4 +1,5 @@
 import React from 'react';
+import DateFromat from 'dateformat';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
+
 
 const styles = theme => ({
     textField: {
@@ -19,17 +21,24 @@ const styles = theme => ({
 });
 class NewTask extends React.Component {
   state = {
-    open: false,
+    default_dates: {
+        start: '',
+        finish: '',
+    }
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
+  componentDidMount(){
+    const start_date = new Date();
+    const finish_date = new Date(Date.now() + 48*60*60*1000);
+    this.setState({
+        default_dates: {
+            start: DateFromat(start_date, 'yyyy-mm-dd') + 'T' + DateFromat(start_date, 'hh:MM'),
+            finish: DateFromat(finish_date, 'yyyy-mm-dd') + 'T' + DateFromat(finish_date, 'hh:MM')
+        }     
+    }, () => {
+        console.log(this.state.default_dates)
+    })
+  }
   render() {
     const {classes} = this.props;
     return (
@@ -55,7 +64,7 @@ class NewTask extends React.Component {
                 className={classes.textField}
             />
             <TextField
-                id="multiline-flexible"
+                id="description"
                 label="Multiline"
                 multiline
                 rowsMax="4"
@@ -67,7 +76,7 @@ class NewTask extends React.Component {
                 id="start_time"
                 label="have to be started at"
                 type="datetime-local"
-                defaultValue="2017-05-24T10:30"
+                defaultValue={this.state.default_dates.start}
                 className={classes.datePicker}
                 InputLabelProps={{
                     shrink: true,
@@ -77,7 +86,7 @@ class NewTask extends React.Component {
                 id="finish_time"
                 label="have to be finished at"
                 type="datetime-local"
-                defaultValue="2017-05-24T10:30"
+                defaultValue={this.state.default_dates.finish}
                 className={classes.datePicker}
                 InputLabelProps={{
                     shrink: true,
