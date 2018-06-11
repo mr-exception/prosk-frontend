@@ -6,7 +6,7 @@ const getTracks = (task_id, onSuccess, onFail) => {
     getToken((token) => {
         const options = { method: 'GET',
             url: `${enviroment.server.url}/track`,
-            headers: { 'content-type': 'application/json', token }, 
+            headers: { 'content-type': 'application/json', token },
             body: { task_id }, json: true 
         };
 
