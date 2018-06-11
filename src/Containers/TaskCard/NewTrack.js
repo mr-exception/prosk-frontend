@@ -33,7 +33,8 @@ class NewTrack extends React.Component {
             finish_time: false,
             start_time_message: '',
             finish_time_message: '',
-        }
+        },
+        description: ''
     };
 
     componentDidMount(){
@@ -55,13 +56,11 @@ class NewTrack extends React.Component {
                 start_time_message: '',
                 finish_time_message: '',
         }}, () => {
-            const description = document.getElementById('description').value
+            const description = this.state.description
 
             const start_date = new Date(document.getElementById('start_time').value);
             const finish_date = new Date(document.getElementById('finish_time').value);
 
-            console.log(start_date)
-            console.log(finish_date)
 
             const current_state = this.state;
             if(start_date > finish_date){    
@@ -84,7 +83,16 @@ class NewTrack extends React.Component {
             newTrack(this.props.task_id,description, start_time, finish_time, (track) => {
                 this.props.close(true)
             }, (errors) => {
-
+                for(let i=0; i<errors.length; i++){
+                    if(errors[i].code == 1002){
+                        const current_state = this.state;
+                        current_state.errors.start_time = true;
+                        current_state.errors.finish_time = true;
+                        current_state.errors.start_time_message = 'there is time collision between tracks';
+                        current_state.errors.finish_time_message = 'there is time collision between tracks';
+                        this.setState(current_state);
+                    }
+                }
             })
         })
     }
@@ -111,7 +119,7 @@ class NewTrack extends React.Component {
                     className={classes.textField}
                     margin="normal"
                     fullWidth
-
+                    onChange={(e) => {this.setState({description: e.target.value})}}
                     error={this.state.errors.description}
                     helperText={this.state.errors.description? 'plaese enter the description': ''}
                 />

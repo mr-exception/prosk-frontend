@@ -4,13 +4,11 @@ const request = require("request");
 
 const getTracks = (task_id, onSuccess, onFail) => {
     getToken((token) => {
-        var request = require("request");
-
-        var options = {
+        const options = {
             method: 'POST',
-            url: 'http://localhost:8000/api/track',
-            headers: { 'content-type': 'application/json', token: 'CMQTGfkQW15mYP0KWANZKOltoyvJS0IaTWblyKPTaCKlX' },
-            body: { task_id: 15, limit: 999 },
+            url: `${enviroment.server.url}/track`,
+            headers: { 'content-type': 'application/json', token },
+            body: { task_id, limit: 999 },
             json: true 
         };
 
@@ -40,7 +38,7 @@ const newTrack = (task_id, description, started_at, finished_at, onSuccess, onFa
                 if(body.ok)
                     onSuccess(body.track)
                 else
-                    onSuccess(body.errors)
+                    onFail(body.errors)
             }
         });
     }, (error) => {
