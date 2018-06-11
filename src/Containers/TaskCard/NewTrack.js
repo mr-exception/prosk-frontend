@@ -144,7 +144,7 @@ class NewTrack extends React.Component {
                 <Button onClick={this.props.close} color="secondary">
                 Cancel
                 </Button>
-                <Button onClick={this.props.close} onClick={this.onSave} color="primary">
+                <Button onClick={this.onSave} color="primary">
                 Save
                 </Button>
             </DialogActions>
