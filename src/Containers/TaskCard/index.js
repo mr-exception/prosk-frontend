@@ -80,6 +80,9 @@ class index extends React.Component {
     newTrackDialogOpen: false,
     loadingTracks: false,
     tracks: [],
+    errors: {
+      description: false,
+    }
   };
 
   openNewTrackDialog = () => {
@@ -109,7 +112,6 @@ class index extends React.Component {
     this.setState({loadingTracks: true}, () => {
       getTracks(this.props.id, (tracks) => {
         this.setState({tracks, loadingTracks: false})
-        console.log(tracks.length)
       }, () => {
         console.log('failed');
       })
@@ -131,11 +133,17 @@ class index extends React.Component {
   };
 
   startTracking = () => {
-    var start_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
-    console.log(start_time)
-    startTrack(this.props.id, document.getElementById('description').value, start_time, (track) => {
+    const start_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
+    const description = document.getElementById('description').value;
+
+    if(description == null || description == ''){
+      this.setState({errors: {description: true}})
+      return;
+    }else
+      this.setState({errors: {description: false}})
+
+    startTrack(this.props.id, description, start_time, (track) => {
       this.setState({timer: {active: true, value: 0, track_id: track.id}});
-      console.log(this.state)
     }, (errors) => {
       console.log('error')
     })
@@ -143,7 +151,13 @@ class index extends React.Component {
 
   stopTracking = () => {
     var finish_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
-    stopTrack(this.state.timer.track_id, document.getElementById('description').value, finish_time, (track) => {
+    const description = document.getElementById('description').value;
+
+    if(description == null || description == '')
+      this.setState({errors: {description: true}})
+    else
+      this.setState({errors: {description: false}})
+    stopTrack(this.state.timer.track_id, description, finish_time, (track) => {
       this.setState({timer: {active: false, value: 0, track_id: 0}});
       this.loadTracks();
     }, (errors) => {
@@ -217,6 +231,7 @@ class index extends React.Component {
                 inputProps={{
                   'aria-label': 'track-description',
                 }}
+                error={this.state.errors.description}
               />,
               <Typography key="timer" variant="subheading" className={classes.timer} gutterBottom>
                 {this.handleTimer()}
@@ -240,7 +255,7 @@ class index extends React.Component {
               {this.state.loadingTracks?
                 'loading':
                 (this.state.tracks.length > 0?
-                  <TrackTable tracks={this.state.tracks} />:
+                  <TrackTable tracks={this.state.tracks} loadTracks={this.loadTracks}/>:
                   <div className={classes.paper}>
                     <Typography className={classes.typography} variant="body2" gutterBottom>
                       you dont have any track. add one of them or start a new track

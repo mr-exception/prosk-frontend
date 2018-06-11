@@ -163,7 +163,7 @@ class TaskCard extends React.Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.props.tracks.slice(this.state.page*this.state.rowsPerPage, (this.state.page+1)*this.state.rowsPerPage).map((item, index) => <TrackRow item={item} index={index} key={index} />)}
+          {this.props.tracks.slice(this.state.page*this.state.rowsPerPage, (this.state.page+1)*this.state.rowsPerPage).map((item, index) => <TrackRow item={item} index={index} key={index} loadTracks={this.props.loadTracks} />)}
         </TableBody>
         <TableFooter>
           <TableRow>

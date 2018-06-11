@@ -17,7 +17,6 @@ const getTracks = (task_id, onSuccess, onFail) => {
         request(options, function (error, response, body) {
             if (error) onFail(error);
             else {
-                console.log(body)
                 onSuccess(body)
             }
         });
@@ -58,11 +57,9 @@ const startTrack = (task_id, description, started_at, onSuccess, onFail) => {
             body: { description, started_at },
             json: true 
         };
-        console.log(options)
         request(options, function (error, response, body) {
             if (error) onFail(error);
             else{
-                console.log(body)
                 if(body.ok)
                     onSuccess(body.track)
                 else
@@ -73,24 +70,40 @@ const startTrack = (task_id, description, started_at, onSuccess, onFail) => {
     })
 }
 
-const stopTrack = (task_id, description, finished_at, onSuccess, onFail) => {
+const stopTrack = (track_id, description, finished_at, onSuccess, onFail) => {
     getToken((token) => {
-        var request = require("request");
 
-        var options = { method: 'POST', url: `${enviroment.server.url}/track/finish/${task_id}`,
+        const options = { method: 'POST', url: `${enviroment.server.url}/track/finish/${track_id}`,
             headers: { 'content-type': 'application/json', token },
             body: { description, finished_at },
             json: true 
         };
-        console.log(options)
         request(options, function (error, response, body) {
             if (error) onFail(error);
             else{
-                console.log(body)
                 if(body.ok)
                     onSuccess(body.track)
                 else
                     onFail(body.errors)
+            }
+        });
+
+    })
+}
+
+const removeTrack = (track_id, onSuccess, onFail) => {
+    getToken((token) => {
+        const options = { method: 'DELETE',
+            url: `${enviroment.server.url}/track/${track_id}`,
+            headers: { 'content-type': 'application/json', token } };
+
+        request(options, function (error, response, body) {
+            if(error) onFail(error);
+            else {
+                if(JSON.parse(body).ok)
+                    onSuccess();
+                else
+                    onFail();
             }
         });
 
@@ -100,5 +113,6 @@ module.exports = {
     getTracks,
     newTrack,
     startTrack,
-    stopTrack, 
+    stopTrack,
+    removeTrack,
 }

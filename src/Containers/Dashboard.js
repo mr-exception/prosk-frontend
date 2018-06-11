@@ -94,12 +94,10 @@ class Dashboard extends React.Component {
                   <Typography className={classes.typography} variant="headline" component="title">
                     Loading...
                   </Typography>
-                  <Typography component="p">
-                    <CircularProgress className={classes.progress} thickness={7} />
-                  </Typography>
+                  <CircularProgress className={classes.progress} thickness={7} />
                 </Paper>:
                 (this.state.tasks.length > 0?
-                  this.state.tasks.map(item => <TaskCard {...item} loadPage={this.loadPage} />):
+                  this.state.tasks.map((item, index) => <TaskCard key={index} {...item} loadPage={this.loadPage} />):
                   <Paper className={classes.paper} elevation={4}>
                     <Typography className={classes.typography} variant="headline" component="title">
                       you dont have any task.
