@@ -13,6 +13,7 @@ import TaskDriver from '../Drivers/Tasks';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -52,6 +53,11 @@ class Dashboard extends React.Component {
     newTaskDialogOpen: false,
     tasks: [],
     loading: false,
+
+    snackbar: {
+      open: false,
+      message: '',
+    }
   };
 
   componentDidMount(){
@@ -76,11 +82,30 @@ class Dashboard extends React.Component {
       newTaskDialogOpen: true
     })
   }
-  closeNewTaskDialog = (reload=false) => {
-    if(reload)
+  closeNewTaskDialog = (reload=false, message='') => {
+    if(reload){
       this.loadPage();
+      this.handleOpenSnackbar(message)
+    }
     this.setState({
       newTaskDialogOpen: false
+    })
+  }
+  handleCloseSnackbar = () => {
+    this.setState({
+      snackbar: {
+        open: false,
+        message: '',
+      }
+    })
+  }
+  handleOpenSnackbar = (message) => {
+    console.log(message)
+    this.setState({
+      snackbar: {
+        open: true,
+        message
+      }
     })
   }
   content = () => {
@@ -97,7 +122,7 @@ class Dashboard extends React.Component {
                   <CircularProgress className={classes.progress} thickness={7} />
                 </Paper>:
                 (this.state.tasks.length > 0?
-                  this.state.tasks.map((item, index) => <TaskCard key={index} {...item} loadPage={this.loadPage} />):
+                  this.state.tasks.map((item, index) => <TaskCard key={index} {...item} loadPage={this.loadPage} openSnackbar={this.handleOpenSnackbar}/>):
                   <Paper className={classes.paper} elevation={4}>
                     <Typography className={classes.typography} variant="headline" component="title">
                       you dont have any task.
@@ -115,6 +140,15 @@ class Dashboard extends React.Component {
           <AddIcon />
         </Button>
         <NewTask open={this.state.newTaskDialogOpen} close={this.closeNewTaskDialog}/>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          open={this.state.snackbar.open}
+          onClose={this.handleCloseSnackbar}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{this.state.snackbar.message}</span>}
+        />
       </div>
     )
   }

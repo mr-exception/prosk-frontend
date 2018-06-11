@@ -95,7 +95,8 @@ class index extends React.Component {
       newTrackDialogOpen: false
     })
     if(reload){
-      this.loadTracks()
+      this.props.openSnackbar(`new track added, you can see the track by expanding the task ${this.props.title}`);
+      this.loadTracks();
     }
   }
   componentDidMount(){

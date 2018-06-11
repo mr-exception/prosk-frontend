@@ -71,7 +71,7 @@ class NewTask extends React.Component {
         const finish_time = DateFromat(finish_date, 'yyyy-mm-dd hh:MM:ss');
         
         newTask(title, description, start_time, finish_time, poritory, (task) => {
-            this.props.close(true)
+            this.props.close(true, 'new task added successfully')
         }, (errors) => {
             console.log(errors)
         })
