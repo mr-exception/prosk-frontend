@@ -20,7 +20,7 @@ import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 
-import {removeTask} from '../../Drivers/Tasks';
+import {removeTask, finishTask, doingTask} from '../../Drivers/Tasks';
 import {getTracks, startTrack, stopTrack} from '../../Drivers/Tracks';
 
 import TrackTable from './TrackTable';
@@ -173,7 +173,23 @@ class index extends React.Component {
       console.log(errors)
     })
   }
+
+  onFinish = () => {
+    finishTask(this.props.id, () => {
+      this.props.loadPage()
+    }, (errors) => {
+      console.log(errors)
+    })
+  }
   
+  onDoing = () => {
+    console.log('tet')
+    doingTask(this.props.id, () => {
+      this.props.loadPage()
+    }, (errors) => {
+      console.log(errors)
+    })
+  }
   render() {
     const { classes, status } = this.props;
     return (
@@ -183,13 +199,13 @@ class index extends React.Component {
             action={[
               status === 3?(
                 <Tooltip key="done" id="tooltip-icon" title="mark as doing">
-                  <IconButton className={classes.button} style={{color: orange[500]}} aria-label="Done">
+                  <IconButton className={classes.button} onClick={this.onDoing} style={{color: orange[500]}} aria-label="Done">
                     <i className="material-icons">error</i>
                   </IconButton>
                 </Tooltip>
               ):(
                 <Tooltip key="done" id="tooltip-icon" title="mark as done">
-                  <IconButton className={classes.button} style={{color: green[600]}} aria-label="Done">
+                  <IconButton className={classes.button} style={{color: green[600]}} onClick={this.onFinish} aria-label="Done">
                     <i className="material-icons">check_circle</i>
                   </IconButton>
                 </Tooltip>
@@ -261,11 +277,14 @@ class index extends React.Component {
                     <Typography className={classes.typography} variant="body2" gutterBottom>
                       you dont have any track. add one of them or start a new track
                     </Typography>
-                    <Typography component="p">
-                      <Button variant="contained" color="primary" onClick={this.openNewTrackDialog} className={classes.typography} className={classes.button}>
-                        add new track
-                      </Button>
-                    </Typography>
+                    {this.props.status != 3?
+
+                      <Typography component="p">
+                        <Button variant="contained" color="primary" onClick={this.openNewTrackDialog} className={classes.typography} className={classes.button}>
+                          add new track
+                        </Button>
+                      </Typography>
+                    :''}
                   </div>
                 )}
             </CardContent>
