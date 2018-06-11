@@ -100,13 +100,13 @@ class Dashboard extends React.Component {
     })
   }
   handleOpenSnackbar = (message) => {
-    console.log(message)
-    this.setState({
-      snackbar: {
-        open: true,
-        message
-      }
-    })
+    if(message != '')
+      this.setState({
+        snackbar: {
+          open: true,
+          message
+        }
+      })
   }
   content = () => {
     const { classes } = this.props;

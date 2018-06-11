@@ -28,7 +28,9 @@ class NewTask extends React.Component {
     },
     errors: {
         title: false,
+        title_message: '',
         description: false,
+        description_message: '',
         start_time: false,
         finish_time: false,
         start_time_message: '',
@@ -55,15 +57,27 @@ class NewTask extends React.Component {
         }
         if(title == null || title == ''){
             current_state.errors.title = true;
+            current_state.errors.title_message = 'please enter title';
         }else{
-            current_state.errors.title = false;
+            if((title||'').length > 32){
+                current_state.errors.title = true;
+                current_state.errors.title_message = 'title must be less than 32 charachters';
+            }else 
+                current_state.errors.title = false;
         }
+
         if(description == null || description == ''){
             current_state.errors.description = true;
+            current_state.errors.description = 'please enter description';
         }else{
-            current_state.errors.description = false;
+            if((description||'').length > 256){
+                current_state.errors.description = true;
+                current_state.errors.description_message = 'description must be less than 256 charachters';
+            }else
+                current_state.errors.description = false;
         }
         this.setState(current_state)
+        console.log(current_state)
         if(current_state.errors.title || current_state.errors.description || current_state.errors.finish_time || current_state.errors.start_time){
             return;
         }
@@ -111,7 +125,7 @@ class NewTask extends React.Component {
                 className={classes.textField}
 
                 error={this.state.errors.title}
-                helperText={this.state.errors.title? 'plaese enter the title': ''}
+                helperText={this.state.errors.title_message}
             />
             <TextField
                 id="description"
@@ -124,7 +138,7 @@ class NewTask extends React.Component {
                 onChange={(e) => {this.setState({description: e.target.value})}}
 
                 error={this.state.errors.description}
-                helperText={this.state.errors.description? 'plaese enter the description': ''}
+                helperText={this.state.errors.description_message}
             />
             <TextField
                 id="start_time"

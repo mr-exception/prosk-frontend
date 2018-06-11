@@ -51,6 +51,7 @@ class NewTrack extends React.Component {
         this.setState({
             errors: {
                 description: false,
+                description_message: '',
                 start_time: false,
                 finish_time: false,
                 start_time_message: '',
@@ -68,9 +69,19 @@ class NewTrack extends React.Component {
                 current_state.errors.finish_time = true;
                 current_state.errors.start_time_message = 'starting time must be before finish time'
                 current_state.errors.finish_time_message = 'starting time must be before finish time'
+            }else{
+                current_state.errors.start_time = false;
+                current_state.errors.finish_time = false;
             }
             if(description == null || description == ''){
                 current_state.errors.description = true;
+                current_state.errors.description_message = 'please enter description';
+            }else{
+                if((description||'').length > 64){
+                    current_state.errors.description = true;
+                    current_state.errors.description_message = 'description must be less than 64 charachters';
+                }else
+                    current_state.errors.description = false;
             }
             this.setState(current_state)
             if(current_state.errors.description || current_state.errors.finish_time || current_state.errors.start_time){
@@ -121,7 +132,7 @@ class NewTrack extends React.Component {
                     fullWidth
                     onChange={(e) => {this.setState({description: e.target.value})}}
                     error={this.state.errors.description}
-                    helperText={this.state.errors.description? 'plaese enter the description': ''}
+                    helperText={this.state.errors.description_message}
                 />
                 <TextField
                     id="start_time"
