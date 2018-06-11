@@ -13,6 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import DateFromat from 'dateformat';
 
 import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
@@ -20,7 +21,7 @@ import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 
 import {removeTask} from '../../Drivers/Tasks';
-import {getTracks} from '../../Drivers/Tracks';
+import {getTracks, startTrack, stopTrack} from '../../Drivers/Tracks';
 
 import TrackTable from './TrackTable';
 import NewTrack from './NewTrack';
@@ -73,6 +74,7 @@ class index extends React.Component {
     timer: {
       active: false,
       value: 0,
+      track_id: 0,
     },
     expanded: false,
     newTrackDialogOpen: false,
@@ -100,7 +102,6 @@ class index extends React.Component {
       const currentState = this.state;
       currentState.timer.value++;
       this.setState(currentState);
-      console.log(currentState.timer);
     }, 1000);
     this.loadTracks()
   }
@@ -130,11 +131,24 @@ class index extends React.Component {
   };
 
   startTracking = () => {
-    this.setState({timer: {active: true, value: 0}});
+    var start_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
+    console.log(start_time)
+    startTrack(this.props.id, document.getElementById('description').value, start_time, (track) => {
+      this.setState({timer: {active: true, value: 0, track_id: track.id}});
+      console.log(this.state)
+    }, (errors) => {
+      console.log('error')
+    })
   }
 
   stopTracking = () => {
-    this.setState({timer: {active: false, value: 0}});
+    var finish_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
+    stopTrack(this.state.timer.track_id, document.getElementById('description').value, finish_time, (track) => {
+      this.setState({timer: {active: false, value: 0, track_id: 0}});
+      this.loadTracks();
+    }, (errors) => {
+      console.log('error')
+    })
   }
 
   onDelete = () => {
@@ -198,6 +212,7 @@ class index extends React.Component {
               <Input
                 key="description"
                 placeholder="enter something about you works today"
+                id="description"
                 className={classes.input}
                 inputProps={{
                   'aria-label': 'track-description',
