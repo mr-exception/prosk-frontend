@@ -55,6 +55,10 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount(){
+    this.loadPage();
+  }
+
+  loadPage = () => {
     this.setState({
       loading: true
     }, () => {
@@ -69,13 +73,14 @@ class Dashboard extends React.Component {
       });
     })
   }
-
   openNewTaskDialog = () => {
     this.setState({
       newTaskDialogOpen: true
     })
   }
-  closeNewTaskDialog = () => {
+  closeNewTaskDialog = (reload=false) => {
+    if(reload)
+      this.loadPage();
     this.setState({
       newTaskDialogOpen: false
     })
@@ -96,7 +101,7 @@ class Dashboard extends React.Component {
                   </Typography>
                 </Paper>:
                 (this.state.tasks.length > 0?
-                  this.state.tasks.map(item => <TaskCard {...item}/>):
+                  this.state.tasks.map(item => <TaskCard {...item} loadPage={this.loadPage} />):
                   <Paper className={classes.paper} elevation={4}>
                     <Typography className={classes.typography} variant="headline" component="title">
                       you dont have any task.

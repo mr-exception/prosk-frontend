@@ -17,6 +17,8 @@ import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 
+import {removeTask} from '../../Drivers/Tasks';
+
 import TrackTable from './TrackTable';
 import NewTrack from './NewTrack';
 
@@ -105,6 +107,13 @@ class index extends React.Component {
     this.setState({timer: {active: false, value: 0}});
   }
 
+  onDelete = () => {
+    removeTask(this.props.id, () => {
+      this.props.loadPage();
+    }, (errors) => {
+      console.log(errors)
+    })
+  }
   render() {
     const { classes, status } = this.props;
     return (
@@ -132,13 +141,13 @@ class index extends React.Component {
                 </IconButton>
               </Tooltip>,
               <Tooltip key="delete" id="tooltip-icon" title="remove task">
-                <IconButton className={classes.button} style={{color: red[800]}} aria-label="Delete">
+                <IconButton className={classes.button} style={{color: red[800]}} onClick={this.onDelete} aria-label="Delete">
                   <i className="material-icons">delete</i>
                 </IconButton>
               </Tooltip>
             ]}
-            title={this.props.title}
-            subheader="you worked on this task for 02:05:43"
+            title={`${this.props.title}`}
+            subheader={`from ${this.props.start_time} to ${this.props.finish_time}`}
           />
           <CardContent>
             <Typography component="p">{this.props.description}</Typography>

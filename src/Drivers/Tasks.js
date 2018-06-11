@@ -43,8 +43,32 @@ const newTask = (title, description, start_time, finish_time, poritory, onSucces
     })
 }
 
+const removeTask = (task_id, onSuccess, onFail) => {
+    getToken((token) => {
+        const options = { 
+            method: 'DELETE',
+            url: `${enviroment.server.url}/task/${task_id}`,
+            headers: { token, 'content-type': 'application/json' }
+        };
+
+        request(options, function (error, response, body) {
+            if(error) onFail(error);
+            else{
+                console.log(body)
+                if(JSON.parse(body).ok)
+                    onSuccess()
+                else
+                    onFail()
+            }
+        });
+    }, (errors) => {
+        onFail(errors)
+    })
+}
+
 
 module.exports = {
     getTasks,
     newTask,
+    removeTask,
 }
