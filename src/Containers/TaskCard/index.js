@@ -108,6 +108,7 @@ class index extends React.Component {
     this.setState({loadingTracks: true}, () => {
       getTracks(this.props.id, (tracks) => {
         this.setState({tracks, loadingTracks: false})
+        console.log(tracks.length)
       }, () => {
         console.log('failed');
       })

@@ -5,7 +5,7 @@ const request = require("request");
 const getTasks = (onSuccess, onFail) => {
     getToken((token) => {
         const options = { 
-            method: 'GET',
+            method: 'POST',
             url: `${enviroment.server.url}/task`,
             headers: { 'content-type': 'application/json',token } };
 

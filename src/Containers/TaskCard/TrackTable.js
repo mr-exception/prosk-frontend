@@ -130,20 +130,25 @@ const styles = theme => ({
     maxWidth: 600
   },
 });
-const data = [
-  {id: 1,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Do fugiat sit aute est sit id velit excepteur sint fugiat commodo occaecat.'},
-  {id: 2,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Officia esse aute aliquip irure veniam eu ipsum culpa et est est ullamco veniam.'},
-  {id: 3,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Aliquip consequat exercitation commodo nostrud.'},
-  {id: 4,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Cupidatat sint qui voluptate irure.'},
-  {id: 5,started_at: '2018-05-05 5:12:00', finished_at: '2018-06-19 6:18:12', description: 'Ex labore elit velit exercitation deserunt amet cillum.'},
-];
 class TaskCard extends React.Component {
-  state = { expanded: false };
+  state = { 
+    expanded: false,
+    page: 0,
+    rowsPerPage: 5,
+  };
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
   };
 
+  handleChangePage = (event, page) => {
+    this.setState({
+      page
+    })
+  }
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
   render() {
     const { classes } = this.props;
     return (
@@ -151,22 +156,22 @@ class TaskCard extends React.Component {
         <TableHead>
           <TableRow>
             <TableCell key="id" >id</TableCell>
+            <TableCell key="description" >description</TableCell>
             <TableCell key="from"  numeric>from</TableCell>
             <TableCell key="tp"  numeric>to</TableCell>
-            <TableCell key="description" >description</TableCell>
             <TableCell key="operations" ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item, index) => <TrackRow item={item} index={index} key={index} />)}
+          {this.props.tracks.slice(this.state.page*this.state.rowsPerPage, (this.state.page+1)*this.state.rowsPerPage).map((item, index) => <TrackRow item={item} index={index} key={index} />)}
         </TableBody>
         <TableFooter>
           <TableRow>
             <TablePagination
               colSpan={5}
-              count={25}
-              rowsPerPage={10}
-              page={0}
+              count={this.props.tracks.length}
+              rowsPerPage={this.state.rowsPerPage}
+              page={this.state.page}
               onChangePage={this.handleChangePage}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
               ActionsComponent={TablePaginationActionsWrapped}

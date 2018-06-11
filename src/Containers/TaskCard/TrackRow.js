@@ -18,11 +18,11 @@ class TrackRow extends React.Component {
     return (
       <TableRow>
         <TableCell>{index+1}</TableCell>
+        <TableCell>{item.description}</TableCell>
         <TableCell>{item.started_at}</TableCell>
         <TableCell>{item.finished_at}</TableCell>
-        <TableCell>{item.description}</TableCell>
         <TableCell>
-          <IconButton className={classes.button} style={{color: red[600]}} aria-label="Done">
+          <IconButton className={classes.button} style={{color: red[600], margin: 0, height: 24}} aria-label="Done">
             <i className="material-icons">delete</i>
           </IconButton>
         </TableCell>
