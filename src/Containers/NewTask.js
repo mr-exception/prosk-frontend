@@ -110,7 +110,7 @@ class NewTask extends React.Component {
             />
             <TextField
                 id="description"
-                label="Multiline"
+                label="description"
                 multiline
                 rowsMax="4"
                 className={classes.textField}

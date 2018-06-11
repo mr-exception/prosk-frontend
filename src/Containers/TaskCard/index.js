@@ -85,10 +85,13 @@ class index extends React.Component {
       newTrackDialogOpen: true
     })
   }
-  closeNewTrackDialog = () => {
+  closeNewTrackDialog = (reload=false) => {
     this.setState({
       newTrackDialogOpen: false
     })
+    if(reload){
+      this.loadTracks()
+    }
   }
   componentDidMount(){
     setInterval(() => {
@@ -99,6 +102,9 @@ class index extends React.Component {
       this.setState(currentState);
       console.log(currentState.timer);
     }, 1000);
+    this.loadTracks()
+  }
+  loadTracks = () => {
     this.setState({loadingTracks: true}, () => {
       getTracks(this.props.id, (tracks) => {
         this.setState({tracks, loadingTracks: false})
@@ -233,7 +239,7 @@ class index extends React.Component {
             </CardContent>
           </Collapse>
         </Card>
-        <NewTrack open={this.state.newTrackDialogOpen} close={this.closeNewTrackDialog}/>
+        <NewTrack task_id={this.props.id} open={this.state.newTrackDialogOpen} close={this.closeNewTrackDialog}/>
       </div>
     );
   }

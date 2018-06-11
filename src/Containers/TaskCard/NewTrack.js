@@ -9,6 +9,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 
+import {newTrack} from '../../Drivers/Tracks';
+
 
 const styles = theme => ({
     textField: {
@@ -20,79 +22,135 @@ const styles = theme => ({
     },
 });
 class NewTrack extends React.Component {
-  state = {
-    default_dates: {
-        start: '',
-        finish: '',
-    }
-  };
-
-  componentDidMount(){
-    const start_date = new Date();
-    const finish_date = new Date(Date.now() + 48*60*60*1000);
-    this.setState({
+    state = {
         default_dates: {
-            start: DateFromat(start_date, 'yyyy-mm-dd') + 'T' + DateFromat(start_date, 'hh:MM'),
-            finish: DateFromat(finish_date, 'yyyy-mm-dd') + 'T' + DateFromat(finish_date, 'hh:MM')
-        }     
-    })
-  }
-  render() {
-    const {classes} = this.props;
-    return (
-        <Dialog
-            fullWidth={true}
-            maxWidth='md'
-            open={this.props.open}
-            onClose={this.handleClose}
-            aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">New Track</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-                you can add new track here:
-            </DialogContentText>
-            <TextField
-                id="description"
-                label="Multiline"
-                multiline
-                rowsMax="4"
-                className={classes.textField}
-                margin="normal"
-                fullWidth
-            />
-            <TextField
-                id="start_time"
-                label="have to be started at"
-                type="datetime-local"
-                defaultValue={this.state.default_dates.start}
-                className={classes.datePicker}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-            />
-            <TextField
-                id="finish_time"
-                label="have to be finished at"
-                type="datetime-local"
-                defaultValue={this.state.default_dates.finish}
-                className={classes.datePicker}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.props.close} color="secondary">
-              Cancel
-            </Button>
-            <Button onClick={this.props.close} color="primary">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-    );
-  }
+            start: '',
+            finish: '',
+        },
+        errors: {
+            description: false,
+            start_time: false,
+            finish_time: false,
+            start_time_message: '',
+            finish_time_message: '',
+        }
+    };
+
+    componentDidMount(){
+        const start_date = new Date();
+        const finish_date = new Date(Date.now() + 2*60*60*1000);
+        this.setState({
+            default_dates: {
+                start: DateFromat(start_date, 'yyyy-mm-dd') + 'T' + DateFromat(start_date, 'hh:MM'),
+                finish: DateFromat(finish_date, 'yyyy-mm-dd') + 'T' + DateFromat(finish_date, 'hh:MM')
+            }     
+        })
+    }
+    onSave = () => {
+        this.setState({
+            errors: {
+                description: false,
+                start_time: false,
+                finish_time: false,
+                start_time_message: '',
+                finish_time_message: '',
+        }}, () => {
+            const description = document.getElementById('description').value
+
+            const start_date = new Date(document.getElementById('start_time').value);
+            const finish_date = new Date(document.getElementById('finish_time').value);
+
+            console.log(start_date)
+            console.log(finish_date)
+
+            const current_state = this.state;
+            if(start_date > finish_date){    
+                current_state.errors.start_time = true;
+                current_state.errors.finish_time = true;
+                current_state.errors.start_time_message = 'starting time must be before finish time'
+                current_state.errors.finish_time_message = 'starting time must be before finish time'
+            }
+            if(description == null || description == ''){
+                current_state.errors.description = true;
+            }
+            this.setState(current_state)
+            if(current_state.errors.description || current_state.errors.finish_time || current_state.errors.start_time){
+                console.log('error')
+                return;
+            }
+            const start_time = DateFromat(start_date, 'yyyy-mm-dd HH:MM:ss');
+            const finish_time = DateFromat(finish_date, 'yyyy-mm-dd HH:MM:ss');
+
+            newTrack(this.props.task_id,description, start_time, finish_time, (track) => {
+                this.props.close(true)
+            }, (errors) => {
+
+            })
+        })
+    }
+    render() {
+        const {classes} = this.props;
+        return (
+            <Dialog
+                fullWidth={true}
+                maxWidth='md'
+                open={this.props.open}
+                onClose={this.handleClose}
+                aria-labelledby="form-dialog-title"
+            >
+            <DialogTitle id="form-dialog-title">New Track</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    you can add new track here:
+                </DialogContentText>
+                <TextField
+                    id="description"
+                    label="description"
+                    multiline
+                    rowsMax="4"
+                    className={classes.textField}
+                    margin="normal"
+                    fullWidth
+
+                    error={this.state.errors.description}
+                    helperText={this.state.errors.description? 'plaese enter the description': ''}
+                />
+                <TextField
+                    id="start_time"
+                    label="have to be started at"
+                    type="datetime-local"
+                    defaultValue={this.state.default_dates.start}
+                    className={classes.datePicker}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    error={this.state.errors.start_time}
+                    helperText={this.state.errors.start_time? this.state.errors.start_time_message: ''}
+                />
+                <TextField
+                    id="finish_time"
+                    label="have to be finished at"
+                    type="datetime-local"
+                    defaultValue={this.state.default_dates.finish}
+                    className={classes.datePicker}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    error={this.state.errors.finish_time}
+                    helperText={this.state.errors.finish_time? this.state.errors.finish_time_message: ''}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={this.props.close} color="secondary">
+                Cancel
+                </Button>
+                <Button onClick={this.props.close} onClick={this.onSave} color="primary">
+                Save
+                </Button>
+            </DialogActions>
+            </Dialog>
+        );
+    }
 }
 
 export default withStyles(styles)(NewTrack);
