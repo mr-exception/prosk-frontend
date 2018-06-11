@@ -11,6 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 
 import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
@@ -18,6 +20,7 @@ import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 
 import {removeTask} from '../../Drivers/Tasks';
+import {getTracks} from '../../Drivers/Tracks';
 
 import TrackTable from './TrackTable';
 import NewTrack from './NewTrack';
@@ -52,6 +55,17 @@ const styles = theme => ({
   },
   timer: {
     margin: 'auto'
+  },
+
+  paper: {
+    textAlign: 'center',
+    padding: 25,
+    marginTop: 40,
+    width: '50%',
+    marginLeft: '23%',
+  },
+  typography: {
+    margin: 20
   }
 });
 class index extends React.Component {
@@ -62,6 +76,8 @@ class index extends React.Component {
     },
     expanded: false,
     newTrackDialogOpen: false,
+    loadingTracks: false,
+    tracks: [],
   };
 
   openNewTrackDialog = () => {
@@ -83,6 +99,13 @@ class index extends React.Component {
       this.setState(currentState);
       console.log(currentState.timer);
     }, 1000);
+    this.setState({loadingTracks: true}, () => {
+      getTracks(this.props.id, (tracks) => {
+        this.setState({tracks, loadingTracks: false})
+      }, () => {
+        console.log('failed');
+      })
+    })
   }
 
   handleTimer = () => {
@@ -114,6 +137,7 @@ class index extends React.Component {
       console.log(errors)
     })
   }
+  
   render() {
     const { classes, status } = this.props;
     return (
@@ -191,7 +215,21 @@ class index extends React.Component {
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <TrackTable />
+              {this.state.loadingTracks?
+                'loading':
+                (this.state.tracks.length > 0?
+                  <TrackTable tracks={this.state.tracks} />:
+                  <div className={classes.paper}>
+                    <Typography className={classes.typography} variant="body2" gutterBottom>
+                      you dont have any track. add one of them or start a new track
+                    </Typography>
+                    <Typography component="p">
+                      <Button variant="contained" color="primary" onClick={this.openNewTrackDialog} className={classes.typography} className={classes.button}>
+                        add new track
+                      </Button>
+                    </Typography>
+                  </div>
+                )}
             </CardContent>
           </Collapse>
         </Card>

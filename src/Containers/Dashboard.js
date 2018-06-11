@@ -65,8 +65,6 @@ class Dashboard extends React.Component {
       TaskDriver.getTasks((tasks) => {
         this.setState({
           tasks, loading: false
-        }, () => {
-          console.log(this.state)
         })
       }, (errors) => {
         console.log(errors);
