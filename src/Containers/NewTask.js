@@ -37,11 +37,9 @@ class NewTask extends React.Component {
   };
 
     onSave = () => {
-        // newTask(this.title.value, this.description.value, this.start_time.value, this.finish_time.value, 5, (task) => {
         const title = document.getElementById('title').value
-        const description = document.getElementById('description').value
+        const description = this.state.description
         const poritory = document.getElementById('poritory').value
-
         const start_date = new Date(document.getElementById('start_time').value);
         const finish_date = new Date(document.getElementById('finish_time').value);
         
@@ -51,12 +49,19 @@ class NewTask extends React.Component {
             current_state.errors.finish_time = true;
             current_state.errors.start_time_message = 'starting time must be before finish time'
             current_state.errors.finish_time_message = 'starting time must be before finish time'
+        }else{
+            current_state.errors.start_time = false;
+            current_state.errors.finish_time = false;
         }
         if(title == null || title == ''){
             current_state.errors.title = true;
+        }else{
+            current_state.errors.title = false;
         }
         if(description == null || description == ''){
             current_state.errors.description = true;
+        }else{
+            current_state.errors.description = false;
         }
         this.setState(current_state)
         if(current_state.errors.title || current_state.errors.description || current_state.errors.finish_time || current_state.errors.start_time){
@@ -68,7 +73,7 @@ class NewTask extends React.Component {
         newTask(title, description, start_time, finish_time, poritory, (task) => {
             this.props.close(true)
         }, (errors) => {
-
+            console.log(errors)
         })
     }
   componentDidMount(){
@@ -116,6 +121,7 @@ class NewTask extends React.Component {
                 className={classes.textField}
                 margin="normal"
                 fullWidth
+                onChange={(e) => {this.setState({description: e.target.value})}}
 
                 error={this.state.errors.description}
                 helperText={this.state.errors.description? 'plaese enter the description': ''}

@@ -23,7 +23,7 @@ const getTasks = (onSuccess, onFail) => {
 const newTask = (title, description, start_time, finish_time, poritory, onSuccess, onFail) => {
     getToken((token) => {
         var options = { method: 'POST',
-        url: `${enviroment.server.url}/task`,
+        url: `${enviroment.server.url}/task/create`,
         headers: 
         { 'content-type': 'application/json', token},
         body: { title, description, start_time, finish_time, poritory }, json: true };
