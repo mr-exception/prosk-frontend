@@ -25,6 +25,14 @@ class NewTask extends React.Component {
     default_dates: {
         start: '',
         finish: '',
+    },
+    errors: {
+        title: false,
+        description: false,
+        start_time: false,
+        finish_time: false,
+        start_time_message: '',
+        finish_time_message: '',
     }
   };
 
@@ -32,10 +40,32 @@ class NewTask extends React.Component {
         // newTask(this.title.value, this.description.value, this.start_time.value, this.finish_time.value, 5, (task) => {
         const title = document.getElementById('title').value
         const description = document.getElementById('description').value
-        const start_time = document.getElementById('start_time').value
-        const finish_time = document.getElementById('finish_time').value
+        const poritory = document.getElementById('poritory').value
 
-        newTask(title, description, start_time, finish_time, 5, (task) => {
+        const start_date = new Date(document.getElementById('start_time').value);
+        const finish_date = new Date(document.getElementById('finish_time').value);
+        
+        const current_state = this.state;
+        if(start_date > finish_date){    
+            current_state.errors.start_time = true;
+            current_state.errors.finish_time = true;
+            current_state.errors.start_time_message = 'starting time must be before finish time'
+            current_state.errors.finish_time_message = 'starting time must be before finish time'
+        }
+        if(title == null || title == ''){
+            current_state.errors.title = true;
+        }
+        if(description == null || description == ''){
+            current_state.errors.description = true;
+        }
+        this.setState(current_state)
+        if(current_state.errors.title || current_state.errors.description || current_state.errors.finish_time || current_state.errors.start_time){
+            return;
+        }
+        const start_time = DateFromat(start_date, 'yyyy-mm-dd hh:MM:ss');
+        const finish_time = DateFromat(finish_date, 'yyyy-mm-dd hh:MM:ss');
+        
+        newTask(title, description, start_time, finish_time, poritory, (task) => {
             this.props.close()
         }, (errors) => {
 
@@ -67,7 +97,6 @@ class NewTask extends React.Component {
                 you can have new task here
             </DialogContentText>
             <TextField
-                ref={(ref) => this.title = ref}
                 autoFocus
                 margin="dense"
                 id="title"
@@ -75,9 +104,11 @@ class NewTask extends React.Component {
                 type="text"
                 fullWidth
                 className={classes.textField}
+
+                error={this.state.errors.title}
+                helperText={this.state.errors.title? 'plaese enter the title': ''}
             />
             <TextField
-                ref={(ref) => this.description = ref}
                 id="description"
                 label="Multiline"
                 multiline
@@ -85,9 +116,11 @@ class NewTask extends React.Component {
                 className={classes.textField}
                 margin="normal"
                 fullWidth
+
+                error={this.state.errors.description}
+                helperText={this.state.errors.description? 'plaese enter the description': ''}
             />
             <TextField
-                ref={(ref) => this.start_time = ref}
                 id="start_time"
                 label="have to be started at"
                 type="datetime-local"
@@ -96,9 +129,10 @@ class NewTask extends React.Component {
                 InputLabelProps={{
                     shrink: true,
                 }}
+                error={this.state.errors.start_time}
+                helperText={this.state.errors.start_time? this.state.errors.start_time_message: ''}
             />
             <TextField
-                ref={(ref) => this.finish_time = ref}
                 id="finish_time"
                 label="have to be finished at"
                 type="datetime-local"
@@ -107,6 +141,19 @@ class NewTask extends React.Component {
                 InputLabelProps={{
                     shrink: true,
                 }}
+                error={this.state.errors.finish_time}
+                helperText={this.state.errors.finish_time? this.state.errors.finish_time_message: ''}
+            />
+            <TextField
+                id="poritory"
+                label="Poritory"
+                type="number"
+                className={classes.textField}
+                InputLabelProps={{shrink: true,}}
+                defaultValue={5}
+                InputProps={{ inputProps: { min: 1, max: 10 } }}
+                margin="normal"
+                style={{width: 100}}
             />
           </DialogContent>
           <DialogActions>

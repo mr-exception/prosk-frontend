@@ -76,7 +76,6 @@ class Dashboard extends React.Component {
     })
   }
   closeNewTaskDialog = () => {
-    console.log('test')
     this.setState({
       newTaskDialogOpen: false
     })
