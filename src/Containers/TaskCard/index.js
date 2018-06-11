@@ -90,7 +90,8 @@ class index extends React.Component {
       newTrackDialogOpen: true
     })
   }
-  closeNewTrackDialog = (reload=false) => {
+  closeNewTrackDialog = (e, reload=false) => {
+    console.log(reload)
     this.setState({
       newTrackDialogOpen: false
     })

@@ -92,7 +92,7 @@ class NewTrack extends React.Component {
             const finish_time = DateFromat(finish_date, 'yyyy-mm-dd HH:MM:ss');
 
             newTrack(this.props.task_id,description, start_time, finish_time, (track) => {
-                this.props.close(true)
+                this.props.close(null, true)
             }, (errors) => {
                 for(let i=0; i<errors.length; i++){
                     if(errors[i].code == 1002){

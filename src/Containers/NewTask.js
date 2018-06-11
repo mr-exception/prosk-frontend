@@ -77,7 +77,6 @@ class NewTask extends React.Component {
                 current_state.errors.description = false;
         }
         this.setState(current_state)
-        console.log(current_state)
         if(current_state.errors.title || current_state.errors.description || current_state.errors.finish_time || current_state.errors.start_time){
             return;
         }
@@ -177,7 +176,7 @@ class NewTask extends React.Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.close} color="secondary">
+            <Button onClick={() => {this.props.close(false)}} color="secondary">
               Cancel
             </Button>
             <Button onClick={this.onSave} color="primary">

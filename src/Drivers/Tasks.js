@@ -29,7 +29,6 @@ const newTask = (title, description, start_time, finish_time, poritory, onSucces
         body: { title, description, start_time, finish_time, poritory }, json: true };
 
         request(options, function (error, response, body) {
-            console.log(error)
             if (error) onFail(error);
             else{
                 if(body.ok)

@@ -24,9 +24,14 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     position: 'relative',
   }),
-  floatingButton: {
+  floatingAddNewTaskButton: {
     position: 'fixed',
     bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
+  floatingFilterButton: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 10,
     right: theme.spacing.unit * 2,
   },
   paper: {
@@ -136,8 +141,11 @@ class Dashboard extends React.Component {
             )}
           </Grid>
         </Grid>
-        <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingButton} color='primary'>
-          <AddIcon />
+        <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingAddNewTaskButton} color='primary'>
+          <i className="material-icons">add</i>
+        </Button>
+        <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingFilterButton} color='secondary'>
+          <i className="material-icons">filter_list</i>
         </Button>
         <NewTask open={this.state.newTaskDialogOpen} close={this.closeNewTaskDialog}/>
         <Snackbar
