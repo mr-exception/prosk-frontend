@@ -38,4 +38,4 @@ module.exports = {
     main_page_item_load_count: 5,
 }
 ```
-now you can enjoy the application in link `http://localhost:3000`
+now you can enjoy the application in link `http://46.4.158.132:3000/`
