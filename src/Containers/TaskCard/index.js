@@ -91,7 +91,6 @@ class index extends React.Component {
     })
   }
   closeNewTrackDialog = (e, reload=false) => {
-    console.log(reload)
     this.setState({
       newTrackDialogOpen: false
     })
@@ -113,7 +112,21 @@ class index extends React.Component {
   loadTracks = () => {
     this.setState({loadingTracks: true}, () => {
       getTracks(this.props.id, (tracks) => {
-        this.setState({tracks, loadingTracks: false})
+        let sum = 0;
+        for(let i=0; i<tracks.length; i++){
+          if(tracks[i].started_at == null || tracks[i].finished_at == null)
+            continue;
+          const start_ts = (new Date(tracks[i].started_at)).getTime();
+          const finish_ts = (new Date(tracks[i].finished_at)).getTime();
+          sum += finish_ts - start_ts;
+        }
+        sum /= 1000;
+        const hours = Math.floor(sum /3600);
+        const minutes = Math.floor(sum /60);
+        const seconds = Math.floor(sum %60);
+        const sum_of_tracks = {hours, minutes, seconds};
+        this.setState({tracks, loadingTracks: false, sum_of_tracks}, () => {
+        });
       }, () => {
         console.log('failed');
       })
@@ -130,6 +143,17 @@ class index extends React.Component {
       return '';
   }
 
+  workd_time_string = () => {
+    const sum = this.state.sum_of_tracks;
+    if(!sum)
+      return 'loading...';
+    if(sum.hours > 0)
+      return `you've worked ${sum.hours} hours and ${sum.minutes} seconds on this task`;
+    else if(sum.hours >0 || sum.minutes >0 || sum.seconds >0)
+      return `you've worked ${sum.minutes} minutes and ${sum.seconds} seconds on this task`;
+    else
+      return `you havn't worked on this task yet`;
+  }
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
   };
@@ -224,7 +248,7 @@ class index extends React.Component {
               </Tooltip>
             ]}
             title={`${this.props.title}`}
-            subheader={`from ${this.props.start_time} to ${this.props.finish_time}`}
+            subheader={this.workd_time_string()}
           />
           <CardContent>
             <Typography component="p">{this.props.description}</Typography>
