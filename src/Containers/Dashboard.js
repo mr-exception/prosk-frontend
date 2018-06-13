@@ -2,13 +2,12 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MainLayout from './Layouts/Main';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 
 import TaskCard from './TaskCard/index';
 import NewTask from './NewTask';
+import Filter from './Filter';
 
-import TokenDriver from '../Drivers/Token';
 import TaskDriver from '../Drivers/Tasks';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -56,6 +55,10 @@ class Dashboard extends React.Component {
    */
   state = {
     newTaskDialogOpen: false,
+
+    filterDialogOpen: false,
+    filters: {},
+
     tasks: [],
     loading: false,
 
@@ -73,7 +76,7 @@ class Dashboard extends React.Component {
     this.setState({
       loading: true
     }, () => {
-      TaskDriver.getTasks((tasks) => {
+      TaskDriver.getTasks(this.state.filters, (tasks) => {
         this.setState({
           tasks, loading: false
         })
@@ -82,6 +85,7 @@ class Dashboard extends React.Component {
       });
     })
   }
+  
   openNewTaskDialog = () => {
     this.setState({
       newTaskDialogOpen: true
@@ -94,6 +98,23 @@ class Dashboard extends React.Component {
     }
     this.setState({
       newTaskDialogOpen: false
+    })
+  }
+
+  openFilterDialog = () => {
+    this.setState({
+      filterDialogOpen: true
+    })
+  }
+  closeFilterDialog = (reload=false, filters={}) => {
+    if(reload){
+      this.setState({filters}, () => {
+        this.handleOpenSnackbar('filtered all tasks');
+        this.loadPage();
+      })
+    }
+    this.setState({
+      filterDialogOpen: false,
     })
   }
   handleCloseSnackbar = () => {
@@ -144,10 +165,11 @@ class Dashboard extends React.Component {
         <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingAddNewTaskButton} color='primary'>
           <i className="material-icons">add</i>
         </Button>
-        <Button variant="fab" onClick={this.openNewTaskDialog} className={classes.floatingFilterButton} color='secondary'>
+        <Button variant="fab" onClick={this.openFilterDialog} className={classes.floatingFilterButton} color='secondary'>
           <i className="material-icons">filter_list</i>
         </Button>
         <NewTask open={this.state.newTaskDialogOpen} close={this.closeNewTaskDialog}/>
+        <Filter open={this.state.filterDialogOpen} close={this.closeFilterDialog}/>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           open={this.state.snackbar.open}

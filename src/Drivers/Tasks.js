@@ -2,17 +2,20 @@ const getToken = require('./Token').getToken
 const enviroment = require('../Enviroment');
 const request = require("request");
 
-const getTasks = (onSuccess, onFail) => {
+const getTasks = (filters, onSuccess, onFail) => {
     getToken((token) => {
         const options = { 
             method: 'POST',
             url: `${enviroment.server.url}/task`,
-            headers: { 'content-type': 'application/json',token } };
+            headers: { 'content-type': 'application/json',token },
+            body: filters,
+            json: true
+        };
 
         request(options, function (error, response, body) {
             if (error) onFail(error);
             else{
-                onSuccess(JSON.parse(body))
+                onSuccess(body);
             }
         });
 

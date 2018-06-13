@@ -68,7 +68,7 @@ class NewTask extends React.Component {
 
         if(description == null || description == ''){
             current_state.errors.description = true;
-            current_state.errors.description = 'please enter description';
+            current_state.errors.description_message = 'please enter description';
         }else{
             if((description||'').length > 256){
                 current_state.errors.description = true;
@@ -107,9 +107,9 @@ class NewTask extends React.Component {
             maxWidth='md'
             open={this.props.open}
             onClose={this.handleClose}
-            aria-labelledby="form-dialog-title"
+            aria-labelledby="new-task"
         >
-          <DialogTitle id="form-dialog-title">New Task</DialogTitle>
+          <DialogTitle id="new-task">New Task</DialogTitle>
           <DialogContent>
             <DialogContentText>
                 you can have new task here
