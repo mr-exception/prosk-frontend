@@ -150,7 +150,7 @@ class Dashboard extends React.Component {
     })
   }
   handleOpenSnackbar = (message) => {
-    if(message != '')
+    if(message !== '')
       this.setState({
         snackbar: {
           open: true,
@@ -193,7 +193,7 @@ class Dashboard extends React.Component {
                       you dont have any task.
                     </Typography>
                     <Typography component="p">
-                      <Button variant="contained" color="primary" onClick={this.openNewTaskDialog} className={classes.typography} className={classes.button}>
+                      <Button variant="contained" color="primary" onClick={this.openNewTaskDialog} className={classes.button}>
                         add new task
                       </Button>
                     </Typography>

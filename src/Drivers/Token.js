@@ -4,7 +4,7 @@ const request = require("request");
 
 const getToken = (onSuccess, onFail) => {
     const user_token = cookie.load('user_token') || 'NONE';
-    if(user_token == 'None'){
+    if(user_token === 'None'){
         generateToken((token) => {
             cookie.save('user_token', token, {maxAge: enviroment.server.cookieMaxAge})
             onSuccess(token)

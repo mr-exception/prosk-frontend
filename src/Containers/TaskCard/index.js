@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import DateFromat from 'dateformat';
 
 import green from '@material-ui/core/colors/green';
@@ -162,7 +161,7 @@ class index extends React.Component {
     const start_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
     const description = document.getElementById('description').value;
 
-    if(description == null || description == ''){
+    if(description === null || description === ''){
       this.setState({errors: {description: true}})
       return;
     }else
@@ -179,7 +178,7 @@ class index extends React.Component {
     var finish_time = DateFromat(new Date(), 'yyyy-mm-dd hh:MM:ss');
     const description = document.getElementById('description').value;
 
-    if(description == null || description == '')
+    if(description === null || description === '')
       this.setState({errors: {description: true}})
     else
       this.setState({errors: {description: false}})
@@ -302,10 +301,10 @@ class index extends React.Component {
                     <Typography className={classes.typography} variant="body2" gutterBottom>
                       you dont have any track. add one of them or start a new track
                     </Typography>
-                    {this.props.status != 3?
+                    {this.props.status !== 3?
 
                       <Typography component="p">
-                        <Button variant="contained" color="primary" onClick={this.openNewTrackDialog} className={classes.typography} className={classes.button}>
+                        <Button variant="contained" color="primary" onClick={this.openNewTrackDialog} className={classes.button}>
                           add new track
                         </Button>
                       </Typography>

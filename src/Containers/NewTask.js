@@ -55,7 +55,7 @@ class NewTask extends React.Component {
             current_state.errors.start_time = false;
             current_state.errors.finish_time = false;
         }
-        if(title == null || title == ''){
+        if(title === null || title === ''){
             current_state.errors.title = true;
             current_state.errors.title_message = 'please enter title';
         }else{
@@ -66,7 +66,7 @@ class NewTask extends React.Component {
                 current_state.errors.title = false;
         }
 
-        if(description == null || description == ''){
+        if(description === null || description === ''){
             current_state.errors.description = true;
             current_state.errors.description_message = 'please enter description';
         }else{

@@ -12,9 +12,6 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
-import {newTask} from '../Drivers/Tasks';
-
 const styles = theme => ({
     textField: {
         marginRight: theme.spacing.unit,
@@ -66,7 +63,7 @@ class Filter extends React.Component {
         const current_filters = this.state.filters;
         const keys = Object.keys(current_filters);
         for(let i=0; i<keys.length; i++)
-            if(current_filters[keys[i]] == -1)
+            if(current_filters[keys[i]] === -1)
                 delete current_filters[keys[i]];
         
         const dates = ['start_min', 'start_max', 'finish_min', 'finish_max', 'started_min', 'started_max', 'finished_min', 'finished_max'];
@@ -131,7 +128,7 @@ class Filter extends React.Component {
                     type="text"
                     fullWidth
                     className={classes.textField}
-                    value={this.state.filters.title != -1? this.state.filters.title: ''}
+                    value={this.state.filters.title !== -1? this.state.filters.title: ''}
                     onChange={(e) => {this.handleChange(e,'title')}}
 
                     error={this.state.errors.title}
@@ -144,7 +141,7 @@ class Filter extends React.Component {
                     type="text"
                     fullWidth
                     className={classes.textField}
-                    value={this.state.filters.description != -1? this.state.filters.description: ''}
+                    value={this.state.filters.description !== -1? this.state.filters.description: ''}
                     onChange={(e) => {this.handleChange(e,'description')}}
 
                     error={this.state.errors.description}
@@ -159,7 +156,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.started_min != -1? this.state.filters.started_min: ''}
+                        value={this.state.filters.started_min !== -1? this.state.filters.started_min: ''}
                         onChange={(e) => {this.handleChange(e,'started_min')}}
 
                         error={this.state.errors.started_min}
@@ -173,7 +170,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.started_max != -1? this.state.filters.started_max: ''}
+                        value={this.state.filters.started_max !== -1? this.state.filters.started_max: ''}
                         onChange={(e) => {this.handleChange(e,'started_max')}}
 
                         error={this.state.errors.started_max}
@@ -189,7 +186,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.finish_min != -1? this.state.filters.finish_min: ''}
+                        value={this.state.filters.finish_min !== -1? this.state.filters.finish_min: ''}
                         onChange={(e) => {this.handleChange(e,'finished_min')}}
 
                         error={this.state.errors.finished_min}
@@ -203,7 +200,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.finish_max != -1? this.state.filters.description: ''}
+                        value={this.state.filters.finish_max !== -1? this.state.filters.description: ''}
                         onChange={(e) => {this.handleChange(e,'finished_max')}}
 
                         error={this.state.errors.finished_max}
@@ -219,7 +216,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.start_min != -1? this.state.filters.start_min: ''}
+                        value={this.state.filters.start_min !== -1? this.state.filters.start_min: ''}
                         onChange={(e) => {this.handleChange(e,'start_min')}}
                         
                         error={this.state.errors.start_min}
@@ -233,7 +230,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.start_max != -1? this.state.filters.start_max: ''}
+                        value={this.state.filters.start_max !== -1? this.state.filters.start_max: ''}
                         onChange={(e) => {this.handleChange(e,'start_max')}}
 
                         error={this.state.errors.start_max}
@@ -249,7 +246,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.finish_min != -1? this.state.filters.finish_min: ''}
+                        value={this.state.filters.finish_min !== -1? this.state.filters.finish_min: ''}
                         onChange={(e) => {this.handleChange(e,'finish_min')}}
 
                         error={this.state.errors.finish_min}
@@ -263,7 +260,7 @@ class Filter extends React.Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={this.state.filters.finish_max != -1? this.state.filters.finish_max: ''}
+                        value={this.state.filters.finish_max !== -1? this.state.filters.finish_max: ''}
                         onChange={(e) => {this.handleChange(e,'finish_max')}}
 
                         error={this.state.errors.finish_max}

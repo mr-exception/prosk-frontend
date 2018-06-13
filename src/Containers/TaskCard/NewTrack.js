@@ -73,7 +73,7 @@ class NewTrack extends React.Component {
                 current_state.errors.start_time = false;
                 current_state.errors.finish_time = false;
             }
-            if(description == null || description == ''){
+            if(description === null || description === ''){
                 current_state.errors.description = true;
                 current_state.errors.description_message = 'please enter description';
             }else{
@@ -95,7 +95,7 @@ class NewTrack extends React.Component {
                 this.props.close(null, true)
             }, (errors) => {
                 for(let i=0; i<errors.length; i++){
-                    if(errors[i].code == 1002){
+                    if(errors[i].code === 1002){
                         const current_state = this.state;
                         current_state.errors.start_time = true;
                         current_state.errors.finish_time = true;
