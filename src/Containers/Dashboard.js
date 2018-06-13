@@ -13,6 +13,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
+import InfiniteScroll from 'react-infinite-scroller';
+import {main_page_item_load_count} from '../Enviroment';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -65,7 +67,9 @@ class Dashboard extends React.Component {
     snackbar: {
       open: false,
       message: '',
-    }
+    },
+    offset: 0,
+    count: 0
   };
 
   componentDidMount(){
@@ -76,14 +80,34 @@ class Dashboard extends React.Component {
     this.setState({
       loading: true
     }, () => {
-      TaskDriver.getTasks(this.state.filters, (tasks) => {
-        this.setState({
-          tasks, loading: false
+      const filters = this.state.filters;
+      filters.offset = 0;
+      filters.limit = main_page_item_load_count;
+      TaskDriver.getTasks(filters, (tasks) => {
+        TaskDriver.countTasks(filters, (count) => {
+          this.setState({
+            tasks, loading: false, offset: tasks.length, count
+          })
+        }, (errors) => {
+          console.log(errors);
         })
       }, (errors) => {
         console.log(errors);
       });
     })
+  }
+  loadMore = () => {
+    const filters = this.state.filters;
+      filters.offset = this.state.offset;
+      filters.limit = main_page_item_load_count;
+      TaskDriver.getTasks(filters, (tasks) => {
+        const all_tasks = this.state.tasks.concat(tasks);
+        this.setState({
+          tasks: all_tasks, offset: this.state.offset + tasks.length,
+        })
+      }, (errors) => {
+        console.log(errors);
+    });
   }
   
   openNewTaskDialog = () => {
@@ -139,7 +163,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <Grid container justify='center' style={{marginTop: 15}}>
-          <Grid item lg={10} md={10} sm={12} xs={12}>
+          <Grid item lg={8} md={8} sm={10} xs={10}>
             {this.state.loading?
                 <Paper className={classes.paper} elevation={4}>
                   <Typography className={classes.typography} variant="headline" component="title">
@@ -148,7 +172,22 @@ class Dashboard extends React.Component {
                   <CircularProgress className={classes.progress} thickness={7} />
                 </Paper>:
                 (this.state.tasks.length > 0?
-                  this.state.tasks.map((item, index) => <TaskCard key={index} {...item} loadPage={this.loadPage} openSnackbar={this.handleOpenSnackbar}/>):
+                  <InfiniteScroll
+                      pageStart={0}
+                      loadMore={this.loadMore}
+                      hasMore={this.state.offset < this.state.count}
+                      loader={
+                        <Paper key="loading" style={{marginBottom: 40}} className={classes.paper} elevation={4}>
+                          <Typography className={classes.typography} variant="headline" component="title">
+                            Loading...
+                          </Typography>
+                          <CircularProgress className={classes.progress} thickness={7} />
+                        </Paper>
+                      }
+                  >
+                      {this.state.tasks.map((item, index) => <TaskCard key={index} {...item} loadPage={this.loadPage} openSnackbar={this.handleOpenSnackbar}/>)}
+                  </InfiniteScroll>
+                  :
                   <Paper className={classes.paper} elevation={4}>
                     <Typography className={classes.typography} variant="headline" component="title">
                       you dont have any task.

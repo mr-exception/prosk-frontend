@@ -23,6 +23,31 @@ const getTasks = (filters, onSuccess, onFail) => {
         onFail(errors)
     })    
 }
+
+const countTasks = (filters, onSuccess, onFail) => {
+    getToken((token) => {
+        const options = { 
+            method: 'POST',
+            url: `${enviroment.server.url}/task/count`,
+            headers: { 'content-type': 'application/json',token },
+            body: filters,
+            json: true
+        };
+
+        request(options, function (error, response, body) {
+            if (error) onFail(error);
+            else{
+                if(body.ok)
+                    onSuccess(body.count);
+                else
+                    onFail(body.errors);
+            }
+        });
+
+    }, (errors) => {
+        onFail(errors)
+    })    
+}
 const newTask = (title, description, start_time, finish_time, poritory, onSuccess, onFail) => {
     getToken((token) => {
         var options = { method: 'POST',
@@ -110,6 +135,7 @@ const doingTask = (task_id, onSuccess, onFail) => {
 }
 module.exports = {
     getTasks,
+    countTasks,
     newTask,
     removeTask,
     finishTask,

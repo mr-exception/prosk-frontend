@@ -1,14 +1,15 @@
 module.exports = {
+    // title of project, shown on the navbar and tabs title
     title: 'Prosk',
+    // caption of project
     caption: 'simple time tracker',
-
-    layouts: {
-        main: {
-            drawerWidth: 240
-        }
-    },
+    /**
+     * server inforamtions
+     */
     server: {
         url: 'http://localhost:8000/api',
-        cookieMaxAge: 3600*12
-    }
+        cookieMaxAge: 3600*12 // seconds
+    },
+    // first load of tasks limit and every scroll have to load how many tasks more
+    main_page_item_load_count: 5,
 }
